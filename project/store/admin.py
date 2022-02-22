@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.apps import apps
-from server.store.models.admin import *
+from project.store.models.admin import *
 
 def autoregister(*app_list : str) -> None: 
     """
