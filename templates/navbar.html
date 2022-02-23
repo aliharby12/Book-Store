@@ -17,6 +17,7 @@
 
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
+        {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a href="#" class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1">00.00</span>
@@ -29,16 +30,18 @@
               <span class="clearfix d-none d-sm-inline-block"> Logout </span>
             </a>
           </li>
+          {% else %}
           <li class="nav-item">
             <a class="nav-link waves-effect" href="#">
               <span class="clearfix d-none d-sm-inline-block"> Login </span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link waves-effect" href="#">
-              <span class="clearfix d-none d-sm-inline-block"> Signup </span>
+            <a class="nav-link waves-effect" href="{% url 'register' %}">
+              <span class="clearfix d-none d-sm-inline-block"> Register </span>
             </a>
           </li>
+          {% endif %}
           <li class="nav-item">
           <form method='GET'>
             <input class="form-control mr-sm-2" type="text" placeholder="Search by title or price" aria-label="Search" name='q' value='{{ request.GET.q }}'>

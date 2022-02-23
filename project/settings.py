@@ -42,6 +42,9 @@ INSTALLED_APPS = [
 
     # Installed apps
     'project.store.apps.StoreConfig',
+
+    # third party
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [

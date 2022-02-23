@@ -22,7 +22,6 @@ class User(AbstractBaseUser,PermissionsMixin,TimeStampedModel):
     is_superuser = models.BooleanField(default=False)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    avatar = models.ImageField(upload_to = PathAndRename('user/avatar/'))
 
     USERNAME_FIELD = 'email'
 

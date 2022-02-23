@@ -23,7 +23,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {
             'fields': ('email', 'first_name','password',
             'last_name', 'is_admin',
-            'is_active', 'is_staff', 'is_superuser', 'avatar')
+            'is_active', 'is_staff', 'is_superuser')
             }),
     )
 
@@ -32,7 +32,7 @@ class UserAdmin(BaseUserAdmin):
             'classes': ('wide',),
             'fields': ('email', 'password1', 'password2', 'is_admin',
             'is_active', 'is_staff', 'is_superuser', 'first_name',
-            'last_name', 'avatar'),
+            'last_name'),
         }),
     )
 
