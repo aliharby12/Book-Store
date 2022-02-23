@@ -11,6 +11,7 @@ class Book(TimeStampedModel):
     price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField()
     image = models.ImageField(upload_to = PathAndRename('book/images/'))
+    amount = models.IntegerField(default=0)
 
     def get_absolute_url(self):
         return reverse("book-detail", kwargs={
