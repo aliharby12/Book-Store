@@ -7,7 +7,7 @@ from project.store.models import Order, OrderItem, Book
 def increase_cart_item(request, pk):
     item = get_object_or_404(Book, pk=pk)
     order_item, created = OrderItem.objects.get_or_create(
-        item=item,
+        item=item, user=request.user
     )
     order_qs = Order.objects.filter(user=request.user, ordered=False).select_related('user')
     if order_qs.exists():
@@ -57,4 +57,4 @@ def cart_detail(request):
         }
         return render(request, 'cart.html', context)
     except:
-        return redirect("/")
+        return render(request, 'cart.html')

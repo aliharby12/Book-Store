@@ -28,7 +28,8 @@ class OrderItem(TimeStampedModel):
     """database table for order items"""
     item = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
     def get_total_item_price(self):
         return self.quantity * self.item.price
 
