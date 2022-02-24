@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('project.store.router.book')),
     path('auth/', include('project.store.router.auth')),
+    path('cart/', include('project.store.router.cart')),
 ]
 
 if os.environ.get('DEBUG'):

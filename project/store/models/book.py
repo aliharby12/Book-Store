@@ -18,5 +18,15 @@ class Book(TimeStampedModel):
             'pk': self.pk
         })
 
+    def get_increase_cart_item_url(self):
+        return reverse("increase-cart-item", kwargs={
+            'pk': self.pk
+        })
+
+    def get_decrease_cart_item_url(self):
+        return reverse("decrease-cart-item", kwargs={
+            'pk': self.pk
+        })
+
     def __str__(self) -> str:
         return self.title

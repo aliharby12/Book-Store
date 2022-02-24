@@ -33,7 +33,7 @@ class OrderItem(TimeStampedModel):
         return self.quantity * self.item.price
 
     def __str__(self) -> str:
-        return f'item: {self.item.title} with quantity of: {self.quantity}'
+        return self.item.title
 
 
 class Discount(TimeStampedModel):
