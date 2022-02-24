@@ -9,7 +9,7 @@ def increase_cart_item(request, pk):
     order_item, created = OrderItem.objects.get_or_create(
         item=item,
     )
-    order_qs = Order.objects.filter(user=request.user, delivered=False).select_related('user')
+    order_qs = Order.objects.filter(user=request.user, ordered=False).select_related('user')
     if order_qs.exists():
         order = order_qs[0]
         # check if the order item is in the order
@@ -30,7 +30,7 @@ def increase_cart_item(request, pk):
 @login_required
 def decrease_cart_item(request, pk):
     item = get_object_or_404(Book, pk=pk)
-    order_qs = Order.objects.filter(user=request.user, delivered=False).select_related('user')
+    order_qs = Order.objects.filter(user=request.user, ordered=False).select_related('user')
     if order_qs.exists():
         order = order_qs[0]
         # check if the order item is in the order
@@ -51,7 +51,7 @@ def decrease_cart_item(request, pk):
 @login_required
 def cart_detail(request):
     try:
-        order = Order.objects.get(user=request.user, delivered=False)
+        order = Order.objects.get(user=request.user, ordered=False)
         context = {
             'order': order
         }
