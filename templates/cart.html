@@ -14,7 +14,7 @@
 
         </div>
     <div class="table-responsive text-nowrap">
-    <h2>Order Summary</h2>
+    <h2>Cart Summary</h2>
     <table class="table">
         <thead>
         <tr>
@@ -26,20 +26,20 @@
         </tr>
         </thead>
         <tbody>
-        {% for order_item in order.items.all %}
+        {% for cart_item in cart.items.all %}
         <tr>
             <th scope="row">{{ forloop.counter }}</th>
             <td>
-                <a href="{% url 'book-detail' order_item.item.pk %}">{{ order_item.item.title }}</a>
+                <a href="{% url 'book-detail' cart_item.item.pk %}">{{ cart_item.item.title }}</a>
             </td>
-            <td>{{ order_item.item.price }}</td>
+            <td>{{ cart_item.item.price }}</td>
             <td>
-                <a href="{% url 'decrease-cart-item' order_item.item.pk %}"><i class="fas fa-minus mr-2"></i></a>
-                {{ order_item.quantity }}
-                <a href="{% url 'increase-cart-item' order_item.item.pk %}"><i class="fas fa-plus ml-2"></i></a>
+                <a href="{% url 'decrease-cart-item' cart_item.item.pk %}"><i class="fas fa-minus mr-2"></i></a>
+                {{ cart_item.quantity }}
+                <a href="{% url 'increase-cart-item' cart_item.item.pk %}"><i class="fas fa-plus ml-2"></i></a>
             </td>
             <td>
-            ${{ order_item.get_total_item_price }}
+            ${{ cart_item.get_total_item_price }}
             </td>
         </tr>
         {% empty %}
@@ -53,14 +53,14 @@
         </tr>
         {% endfor %}
         
-        {% if order.get_total %}
+        {% if cart.get_cart_total %}
         <tr>
-            <td colspan="4"><b>Order Total</b></td>
-            <td><b>${{ order.get_total }}</b></td>
+            <td colspan="4"><b>Cart Total</b></td>
+            <td><b>${{ cart.get_cart_total }}</b></td>
         </tr>
         <tr>
             <td colspan="5">
-            <a class='btn btn-warning float-right ml-2' href="{% url 'checkout'%}">Proceed to checkout</a>
+            <a class='btn btn-warning float-right ml-2' href="{% url 'checkout' %}">Proceed to checkout</a>
             <a class='btn btn-primary float-right' href='/'>Continue shopping</a>
             </td>
         </tr>

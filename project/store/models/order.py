@@ -1,37 +1,32 @@
 from django.db import models
 
 from project.store.models.abstracts import TimeStampedModel
-from project.store.models import User, Book
+from project.store.models import User
 
+
+class ORDER_STATUS(models.TextChoices):
+    ORDERED = 'ORDERED', 'ORDERED'
+    SHIPPING = 'SHIPPING', 'SHIPPING'
+    DELIVERED = 'DELIVERED', 'DELIVERED'
 
 class Order(TimeStampedModel):
     """database table for orders"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    items = models.ManyToManyField('OrderItem')
+    items = models.ManyToManyField('CartItem')
     address_detail = models.TextField()
-    delivered = models.BooleanField(default=False)
-    ordered = models.BooleanField(default=False)
     paied = models.BooleanField(default=False)
+    total = models.DecimalField(max_digits=6, decimal_places=2)
+    order_status = models.CharField(max_length=10, choices=ORDER_STATUS.choices, default=ORDER_STATUS.ORDERED)
 
-    def get_total(self):
-        total = 0
-        for order_item in self.items.all():
-            total += order_item.get_total_item_price()
-
-        return total
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                name="%(app_label)s_%(class)s_type_valid",
+                check=models.Q(
+                    order_status__in=ORDER_STATUS.values,
+                ),
+            )
+        ]
 
     def __str__(self) -> str:
         return self.user.email
-
-
-class OrderItem(TimeStampedModel):
-    """database table for order items"""
-    item = models.ForeignKey(Book, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    
-    def get_total_item_price(self):
-        return self.quantity * self.item.price
-
-    def __str__(self) -> str:
-        return self.item.title
