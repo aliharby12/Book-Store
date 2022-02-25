@@ -1,5 +1,6 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
+from django.contrib import messages
 
 from project.store.forms import UserCreationForm
 
@@ -13,6 +14,7 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=email, password=raw_password)
             login(request, user)
+            messages.info(request, "account created successfully")
             return redirect('books')
     else:
         form = UserCreationForm()

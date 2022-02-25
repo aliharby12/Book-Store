@@ -1,10 +1,14 @@
 from django import forms
 
-from project.store.models import Order
+from project.store.models import Address
 
 
 class CheckoutForm(forms.ModelForm):
     """form for order checkout"""
     class Meta:
-        model = Order
-        fields = ('address_detail',)
+        model = Address
+        exclude = ('user',)
+
+
+class PaymentForm(forms.Form):
+    stripeToken = forms.CharField(required=False)
