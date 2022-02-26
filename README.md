@@ -3,8 +3,7 @@ this is an online bookstore where the user can view, search and purchase their f
 
 ## General Requirements
 * clone the project and go to the project directory using your terminal / CMD
-* [Python](https://www.python.org/downloads/) 3.9 or above (if you are using mac or linux, you have to make sure that your default python version is 3.9 or above)
-* [Install Docker](https://docs.docker.com/get-docker/)
+* [Docker](https://docs.docker.com/get-docker/)
 
 ## Project Setup
 * Copy the content of `.env.template` file and paste into the new created file `.env`
