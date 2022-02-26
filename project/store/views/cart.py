@@ -2,14 +2,12 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from project.store.models import Cart, OrderItem, Book
+from project.store.models import Cart, Book, CartItem
 
 @login_required
 def increase_cart_item(request, pk):
     item = get_object_or_404(Book, pk=pk)
-    cart_item, created = OrderItem.objects.get_or_create(
-        item=item, user=request.user
-    )
+    cart_item, created = CartItem.objects.get_or_create(item=item)
     cart_qs = Cart.objects.filter(user=request.user).select_related('user')
     if cart_qs.exists():
         # check if the cart item is in the cart
@@ -39,7 +37,7 @@ def decrease_cart_item(request, pk):
         # check if the cart item is in the cart
         cart_qs = cart_qs[0]
         if cart_qs.items.filter(item__pk=item.pk).exists():
-            cart_item = OrderItem.objects.filter(item=item, user=request.user).select_related('item')[0]
+            cart_item = CartItem.objects.filter(item=item).select_related('item')[0]
             if cart_item.quantity > 1:
                 cart_item.quantity -= 1
                 cart_item.save(update_fields=['quantity'])

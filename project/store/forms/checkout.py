@@ -8,7 +8,3 @@ class CheckoutForm(forms.ModelForm):
     class Meta:
         model = Address
         exclude = ('user',)
-
-
-class PaymentForm(forms.Form):
-    stripeToken = forms.CharField(required=False)

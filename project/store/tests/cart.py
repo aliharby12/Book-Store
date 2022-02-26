@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from project.store.models import Cart, OrderItem, Book, User
+from project.store.models import Cart, CartItem, Book, User
 
 from model_bakery import baker
 
@@ -11,10 +11,9 @@ class TestCartModel(TestCase):
     def setUp(self):
         """create an order item instance"""
 
-        self.order_item = OrderItem.objects.create(
+        self.order_item = CartItem.objects.create(
             item=baker.make(Book),
             quantity=10,
-            user=baker.make(User)
         )
 
     def test_create_user_cart(self):

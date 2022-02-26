@@ -2,8 +2,8 @@ from decimal import Decimal
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from project.store.forms import CheckoutForm, PaymentForm
-from project.store.models import Cart, Order, ORDER_STATUS, Address, Payment
+from project.store.forms import CheckoutForm
+from project.store.models import Cart, Order, ORDER_STATUS, Address, Payment, OrderItem
 
 import stripe, os
 
@@ -30,30 +30,36 @@ def pay(request):
         address = Address.objects.filter(user=request.user).select_related('user').last()
         cart = Cart.objects.get(user=request.user)
         cart_items = cart.items.all()
-        form = PaymentForm(request.POST)
-        if form.is_valid():
-            charge = stripe.Charge.create(
-                amount=int(cart.get_cart_total() * 100),
-                currency="usd",
-                source=form.cleaned_data.get('stripeToken')
+        charge = stripe.PaymentIntent.create(
+            amount=int(cart.get_cart_total() * 100),
+            currency="usd",
+            automatic_payment_methods={
+                'enabled': True,
+            },
+            description="charged from test account"
+        )
+        order = Order.objects.create(
+            user=request.user,
+            total=Decimal(cart.get_cart_total()),
+            order_status=ORDER_STATUS.ORDERED,
+            address=address
+        )
+        for cart_item in cart_items:
+            order_item=OrderItem.objects.create(
+                item=cart_item.item,
+                quantity=cart_item.quantity,
+                user=request.user
             )
-            order = Order.objects.create(
-                user=request.user,
-                total=Decimal(cart.get_cart_total()),
-                order_status=ORDER_STATUS.ORDERED,
-                address=address
-            )
-            order.items.add(*cart_items)
-            cart.delete()
+            order.items.add(order_item)
+            cart_item.delete()
+        cart.delete()
 
-            # create the payment
-            Payment.objects.create(
-            stripe_charge_id = charge['id'],
-            user = request.user,
-            amount = order.get_total()
-            )
-            messages.success(request, "Your order was successful!")
-            return redirect("/")
-    else:
-        form = PaymentForm()
+        # create the payment
+        Payment.objects.create(
+        stripe_charge_id = charge['id'],
+        user = request.user,
+        amount = order.total
+        )
+        messages.success(request, "Your order was successful!")
+        return redirect("/")
     return render(request, 'pay.html')

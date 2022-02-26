@@ -112,9 +112,9 @@ button:hover {
           <div class="card">
             
             <div class="new-card-form">
-              <form action="." method="post" class="stripe-form" id="stripe-form">
+              <form method="POST" class="stripe-form" id="stripe-form">
                   {% csrf_token %}
-                  <div class="stripe-form-row" id="creditCard">
+                  <div class="stripe-form-row" id="payment-element">
                       <label for="card-element" id="stripeBtnLabel">
                           Credit or debit card
                       </label>
